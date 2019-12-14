@@ -1,0 +1,17 @@
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: "portal-ui-jenkins"
+spec:
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: |-
+        node('') {
+          stage ('Building image'){
+            openshiftBuild(buildConfig: 'portal-ui', showBuildLogs: 'true')
+          }
+          stage ('Deploying to Dev Environment'){
+            openshiftDeploy(deploymentConfig: 'portal-ui')
+            sleep 10
+          }
+        }
