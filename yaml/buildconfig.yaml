@@ -1,0 +1,33 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: portal-ui
+  labels:
+    app: portal-ui
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  namespace: anchal
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: portal-ui:latest
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: https://github.com/anchalbhalla/intelliBank-FE.git
+    type: Git
+  strategy:
+    dockerStrategy:
+    type: Docker
+  triggers:
+    - imageChange:
+      type: ImageChange
+    - type: ConfigChange
+    - generic:
+        secret: "12345"
+      type: Generic
+    - github:
+        secret: "12345"
+      type: GitHub

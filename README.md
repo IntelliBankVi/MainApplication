@@ -1,1 +1,1 @@
-# MainApplication
+# intelliBank-FE

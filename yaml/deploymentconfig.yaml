@@ -1,0 +1,43 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+ name: portal-ui
+ labels:
+   app: portal-ui
+spec:
+ replicas: 1
+ strategy:
+   type: Rolling
+   rollingUpdate:
+     maxSurge: 1
+     maxUnavailable: 0
+ triggers:
+   - type: "ConfigChange"
+   - type: "ImageChange"
+     imageChangeParams:
+       automatic: true
+       containerNames:
+         - portal-ui
+       from:
+         kind: "ImageStreamTag"
+         name: portal-ui:latest
+ paused: false
+ template:
+   metadata:
+     name: portal-ui
+     labels:
+       app: portal-ui
+   spec:
+     containers:
+       - name: portal-ui
+         image: portal-ui
+         imagePullPolicy: Always
+         resources:
+           requests:
+             cpu: 400m
+             memory: 800Mi
+           limits:
+             cpu: 900m
+             memory: 1200Mi
+         ports:
+           - containerPort: 8080
